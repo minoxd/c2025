@@ -87,7 +87,7 @@ def main():
     #           [99, 100, 126, 120, 101, 56, 105, 120, 115, 122, 126, 101, 113, 59, 121, 126, 57, 122, 85, 58, 100, 85,
     #            96,
     #            58, 127, 120, 100, 57, 115, 119]))
-    # ic(lab1_4(513365, 3355443, 7401712, 10))
+    ic(lab1_4(513365, 3355443, 7401712, 10))
     # ic(lab2_1(52698, 61430))
     # ic(lab2_2([290345, 218585, 143231, 164172, 155768, 423151, 239707, 153544, 287390, 480837]))
     # ic(lab2_3(856,25,7))
@@ -108,11 +108,12 @@ def main():
     # alice.sign(x=5 * 2602 + 1)
     # bob.sign(x=5 * 2022 + 2)
     # ic(square_n_multiply_for_modular_exponentiation(66,470,907))
-    elgamal = Elgamal(d=59, p=877,a=6)
-    elgamal.set_ephemeral(125)
-    elgamal.sign(517)
-    elgamal.verify(696,760,632)
-    elgamal.verify(696,771,819)
+
+    # elgamal = Elgamal(d=59, p=877,a=6)
+    # elgamal.set_ephemeral(125)
+    # elgamal.sign(517)
+    # elgamal.verify(696,760,632)
+    # elgamal.verify(696,771,819)
     pass
 
 

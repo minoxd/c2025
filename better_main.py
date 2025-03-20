@@ -1,4 +1,6 @@
-from better_utils import Elgamal, RSA, CAElgamal, CARSA
+from math import gcd
+
+from better_utils import Elgamal, RSA, CAElgamal, CARSA, mod_exp
 
 
 def elgamal_crypto_system():
@@ -26,35 +28,34 @@ def certificate_authority_elgamal():
     user_identity = 1
     user_public_key = 663
     ke = 113
-    message = 470 * user_public_key + user_identity
+    x = 470 * user_public_key + user_identity
     ca_elgamal = CAElgamal(elgamal)
-    issued_cert = ca_elgamal.issue_cert(user_identity=user_identity, user_public_key=user_public_key, ke=ke,
-                                        message=message)
-    ca_elgamal.verify_cert(message=message, signature=issued_cert['signature'])
+    _, signature = ca_elgamal.issue_cert(user_identity=user_identity, user_public_key=user_public_key, ke=ke, x=x)
+    ca_elgamal.verify_cert(x=x, signature=signature)
 
 
 def rsa_crypto_system():
-    rsa = RSA(251, 191, 3)
+    rsa = RSA(227, 149, 25537)
 
-    message = 124
-    signature, explain_sign = rsa.sign_message(message)
-    is_valid, explain_verify = rsa.verify_signature(message, signature)
-
-    rsa.print_keys()
-    print(f"Signature: {signature}, ({explain_sign})")
-    print(f"Signature Valid: {is_valid}, ({explain_verify})")
+    # message = 124
+    # signature, explain_sign = rsa.sign_message(message)
+    # is_valid, explain_verify = rsa.verify_signature(message, signature)
+    #
+    # rsa.print_keys()
+    # print(f"Signature: {signature} {explain_sign}")
+    # print(f"Signature Valid: {is_valid}, ({explain_verify})")
 
     return rsa
 
 
 def certificate_authority_rsa():
     rsa = rsa_crypto_system()
-    user_identity = None
-    user_public_key = None
-    message = None
+    user_identity = 47
+    user_public_key = 5525
+    x = user_identity + user_public_key
     ca_rsa = CARSA(rsa)
-    issued_cert = ca_rsa.issue_cert(user_identity=user_identity, user_public_key=user_public_key, message=message)
-    ca_rsa.verify_cert(message=message, signature=issued_cert['signature'])
+    _, signature = ca_rsa.issue_cert(x=x)
+    ca_rsa.verify_cert(x=x, signature=signature)
 
 
 def main():
@@ -62,7 +63,10 @@ def main():
     # rsa_crypto_system()
     certificate_authority_elgamal()
     # certificate_authority_rsa()
-
+    # print(mod_exp(36966, 5525, 43039))
+    # print(mod_inverse())
+    # print(is_prime())
+    # print(gcd())
 
 if __name__ == '__main__':
     main()

@@ -109,10 +109,15 @@ class RSA:
         phi = (p - 1) * (q - 1)
 
         if e is None:
-            while True:
-                e = random.randint(2, phi - 1)
-                if gcd(e, phi) == 1:
-                    break
+            print("Missing e")
+            return
+            # while True:
+            #     e = random.randint(2, phi - 1)
+            #     if gcd(e, phi) == 1:
+            #         break
+        if gcd(e, phi) != 1:
+            print("e is not coprime with phi")
+            return
 
         d = mod_inverse(e, phi)
         self.public_key = (n, e)
@@ -143,20 +148,14 @@ class CAElgamal:
     def __init__(self, elgamal: Elgamal):
         self.elgamal = elgamal
 
-    def issue_cert(self, user_identity, user_public_key, ke, message):
-        signature, _ = self.elgamal.sign_message(message, ke=ke)
-        issued_cert = {
-            "cert": {
-                "identity": user_identity,
-                "public_key": user_public_key,
-            },
-            "signature": signature,
-        }
+    def issue_cert(self, user_identity, user_public_key, ke, x):
+        signature, _ = self.elgamal.sign_message(x, ke=ke)
+        issued_cert = (x, signature)
         print(f"Issued Certificate: {issued_cert}")
         return issued_cert
 
-    def verify_cert(self, message, signature):
-        is_valid, _ = self.elgamal.verify_signature(message, signature)
+    def verify_cert(self, x, signature):
+        is_valid, _ = self.elgamal.verify_signature(x, signature)
         print(f"Valid: {is_valid}")
 
 
@@ -164,18 +163,12 @@ class CARSA:
     def __init__(self, rsa: RSA):
         self.rsa = rsa
 
-    def issue_cert(self, user_identity, user_public_key, message):
-        signature, _ = self.rsa.sign_message(message)
-        issued_cert = {
-            "cert": {
-                "identity": user_identity,
-                "public_key": user_public_key,
-            },
-            "signature": signature,
-        }
+    def issue_cert(self, x):
+        signature, _ = self.rsa.sign_message(x)
+        issued_cert = (x, signature)
         print(f"Issued Certificate: {issued_cert}")
         return issued_cert
 
-    def verify_cert(self, message, signature):
-        is_valid, _ = self.rsa.verify_signature(message, signature)
+    def verify_cert(self, x, signature):
+        is_valid, _ = self.rsa.verify_signature(x, signature)
         print(f"Valid: {is_valid}")
